@@ -1,0 +1,13 @@
+<button
+  class="btn btn-primary relative min-w-[10rem] max-w-md rounded-3xl"
+  (click)="clickAction($event)"
+  [type]="type"
+  [disabled]="disabled"
+  [pTooltip]="toolTipText"
+  tooltipPosition="top"
+>
+  @if (iconNamePg) {
+  <span [className]="'pi-' + iconNamePg"></span>
+  }
+  {{ text }}
+</button>

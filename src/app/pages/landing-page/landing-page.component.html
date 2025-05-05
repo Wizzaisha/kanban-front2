@@ -1,0 +1,40 @@
+<main class="w-full h-screen bg-base-200">
+  <div class="drawer drawer-open">
+    <input id="drawer-1" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content">
+      <app-navbar class="flex-1"></app-navbar>
+      <!-- Page content here -->
+
+      <div class="w-full p-4">
+        <p class="text-3xl">Biboo</p>
+        <app-primary-button
+          text="Toggale"
+          (handleClick)="handleToggleTheme()"
+          toolTipText="Toggle"
+        >
+        </app-primary-button>
+
+        @if (!showSidebar) {
+        <button
+          class="btn btn-primary rounded-l-none rounded-r-3xl absolute bottom-10 left-0"
+          (click)="handleShowSideBar()"
+        >
+          <app-svg-icon iconName="icon-show-sidebar"></app-svg-icon>
+        </button>
+        }
+      </div>
+    </div>
+    <div class="drawer-side">
+      <div
+        class="min-h-full p-0 w-60 bg-base-100"
+        [ngClass]="{
+          hidden: !showSidebar,
+          block: showSidebar
+        }"
+      >
+        <!-- Sidebar content here -->
+        <app-sidebar></app-sidebar>
+      </div>
+    </div>
+  </div>
+</main>

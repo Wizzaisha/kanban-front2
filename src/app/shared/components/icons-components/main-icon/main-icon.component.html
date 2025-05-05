@@ -1,0 +1,5 @@
+@if (currentTheme$ | async; as currentTheme) { @if (currentTheme === "light") {
+<app-svg-icon iconName="logo-dark"></app-svg-icon>
+} @else if (currentTheme === "dark") {
+<app-svg-icon iconName="logo-light"></app-svg-icon>
+} }

@@ -1,0 +1,47 @@
+<label class="form-control w-full">
+  <div class="label" *ngIf="showLabel">
+    <span
+      class="label-text"
+      [ngClass]="{
+        'text-error': control.enabled && !control.valid && control.touched
+      }"
+      >{{ labelText }}</span
+    >
+  </div>
+  <input
+    [id]="id"
+    type="text"
+    [placeholder]="placeholder"
+    [formControl]="control"
+    (blur)="onBlur()"
+    class="input input-primary input-bordered bg-white flex items-center gap-2 w-full input-sm"
+    autocomplete="on"
+    [ngClass]="{
+      'input-error': !control!.valid && control.touched
+    }"
+    [readOnly]="readonly"
+  />
+</label>
+
+<div class="w-full text-start">
+  <small
+    *ngIf="control!.errors?.['required'] && control.touched"
+    class="text-error"
+    >Field required.</small
+  >
+  <small
+    *ngIf="control!.errors?.['pattern'] && control.touched"
+    class="text-error"
+    >Value not valid.</small
+  >
+  <small
+    *ngIf="control!.errors?.['maxlength'] && control.touched"
+    class="text-error"
+    >Mimimum length not valid.</small
+  >
+  <small
+    *ngIf="control!.errors?.['minlength'] && control.touched"
+    class="text-error"
+    >Maximum length not valid.</small
+  >
+</div>

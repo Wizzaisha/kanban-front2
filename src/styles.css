@@ -1,1 +1,60 @@
 /* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+@import "tailwindcss-primeui";
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark;
+}
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #ffffff;
+  --color-base-200: #e4ebfa;
+  --color-base-300: #f4f7fd;
+  --color-base-content: #000112;
+  --color-neutral-content: #828fa3;
+  --color-primary: #635fc7;
+  --color-primary-content: #ffffff;
+  --color-secondary: #f4f7fd;
+  --color-secondary-content: #635fc7;
+  --color-accent: #a8a4ff;
+  --color-accent-content: #ffffff;
+  --color-error: #ea5555;
+  --color-error-content: #ffffff;
+
+  --text-xl: 0.75rem;
+  --text-2xl: 0.938rem;
+  --text-3xl: 1.125rem;
+  --text-4xl: 1.5rem;
+
+  --font-sans: "Plus Jakarta Sans";
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: false;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #20212c;
+  --color-base-200: #2b2c37;
+  --color-base-300: #000112;
+  --color-base-content: #ffffff;
+  --color-primary: #635fc7;
+  --color-primary-content: #ffffff;
+  --color-secondary: #f4f7fd;
+  --color-secondary-content: #635fc7;
+  --color-accent: #a8a4ff;
+  --color-accent-content: #ffffff;
+  --color-error: #ea5555;
+  --color-error-content: #ffffff;
+
+  --text-xl: 0.75rem;
+  --text-2xl: 0.938rem;
+  --text-3xl: 1.125rem;
+  --text-4xl: 1.5rem;
+
+  --font-sans: "Plus Jakarta Sans";
+}
