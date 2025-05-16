@@ -1,11 +1,19 @@
-<div class="flex flex-col items-start justify-center">
-  <div class="h-20 flex flex-col items-start justify-center">
+<div
+  class="flex flex-col items-start justify-between text-neutral-content h-screen gap-5 pb-5"
+>
+  <div
+    class="flex-none h-20 flex flex-col items-start justify-center pl-5 w-full"
+  >
     <app-main-icon></app-main-icon>
   </div>
 
-  <div>
+  <app-board-list class="flex-1 w-full"></app-board-list>
+
+  <div class="flex-none w-full px-7">
+    <app-theme-toggle></app-theme-toggle>
+
     <button
-      class="btn btn-ghost text-neutral-content"
+      class="btn btn-ghost text-neutral-content p-0"
       (click)="handleShowSideBar()"
     >
       <app-svg-icon iconName="icon-hide-sidebar"></app-svg-icon>

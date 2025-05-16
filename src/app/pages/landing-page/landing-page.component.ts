@@ -9,6 +9,7 @@ import { selectShowSidebar, selectTheme } from './store/landing.selectors';
 import { CommonModule } from '@angular/common';
 import { LandingPageActions } from './store/action.types';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { BoardsService } from './services/boards/boards.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -31,10 +32,14 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private boardsService: BoardsService
+  ) {}
 
   ngOnInit(): void {
     this.selectStoreData();
+    this.loadData();
   }
 
   ngOnDestroy(): void {
@@ -65,5 +70,29 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     this.store.dispatch(
       LandingPageActions.setShowSidebar({ data: !this.showSidebar })
     );
+  }
+
+  loadData(): void {
+    this.getAllBoards();
+  }
+
+  getAllBoards(): void {
+    this.boardsService
+      .getAll()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+
+          this.store.dispatch(LandingPageActions.setBoards({ data: data }));
+
+          this.store.dispatch(
+            LandingPageActions.setActiveBoard({ data: data[0] })
+          );
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
   }
 }

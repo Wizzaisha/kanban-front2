@@ -1,0 +1,11 @@
+<div
+  class="bg-base-200 flex flex-row justify-center items-center gap-5 py-3 rounded-md"
+>
+  <app-svg-icon iconName="icon-light-theme"></app-svg-icon>
+  <input
+    type="checkbox"
+    class="toggle text-primary-content bg-primary checked:bg-primary checked:text-primary-content"
+    (input)="handleToggleTheme()"
+  />
+  <app-svg-icon iconName="icon-dark-theme"></app-svg-icon>
+</div>

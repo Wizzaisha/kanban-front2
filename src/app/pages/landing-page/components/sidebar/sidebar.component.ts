@@ -7,10 +7,18 @@ import { AppState } from '../../../../shared/store/app.reducer';
 import { LandingPageActions } from '../../store/action.types';
 import { selectShowSidebar } from '../../store/landing.selectors';
 import { SvgIconComponent } from '../../../../shared/components/svg-icon/svg-icon.component';
+import { ThemeToggleComponent } from '../../../../shared/components/toggles/theme-toggle/theme-toggle.component';
+import { BoardListComponent } from '../board-list/board-list.component';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [MainIconComponent, CommonModule, SvgIconComponent],
+  imports: [
+    MainIconComponent,
+    CommonModule,
+    SvgIconComponent,
+    ThemeToggleComponent,
+    BoardListComponent,
+  ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
   standalone: true,

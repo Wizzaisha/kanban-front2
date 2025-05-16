@@ -1,0 +1,52 @@
+<form
+  class="w-full flex flex-col justify-center items-start gap-3"
+  [formGroup]="form"
+>
+  <app-text-input
+    [control]="nameField"
+    placeholder="e.g. Web Design"
+    id="nameField"
+    labelText="Name"
+    [showLabel]="true"
+    class="w-full"
+  ></app-text-input>
+
+  <p class="text-neutral-content">Columns</p>
+
+  @if (columnsStatusArray.controls.length === 0) {
+  <p class="text-neutral text-sm">Columns are empty.</p>
+  }
+
+  <div class="w-full overflow-y-auto max-h-[10rem]">
+    @for (column of columnsStatusArray.controls; track $index) {
+
+    <div class="flex flex-row justify-center items-center gap-3 w-full">
+      <app-text-input
+        [control]="getFormArrayControl($index, 'name')"
+        placeholder="e.g. Todo"
+        [id]="'column' + $index"
+        labelText=""
+        [showLabel]="false"
+        class="w-full"
+      ></app-text-input>
+
+      <button class="btn btn-ghost px-1" (click)="handleDeleteColumn($index)">
+        <app-svg-icon iconName="icon-cross"></app-svg-icon>
+      </button>
+    </div>
+
+    }
+  </div>
+
+  <app-secondary-button
+    text="+ Add New Column"
+    class="w-full"
+    (handleClick)="handleAddNewColumn()"
+  ></app-secondary-button>
+
+  <app-primary-button
+    text="Create New Board"
+    class="w-full"
+    (handleClick)="handleCreateNewBoard()"
+  ></app-primary-button>
+</form>

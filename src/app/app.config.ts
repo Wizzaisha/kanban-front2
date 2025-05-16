@@ -8,13 +8,23 @@ import StylePreset from './shared/style-presets/style-preset';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import { reducers } from './shared/store/app.reducer';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment.development';
 import { metaReducers } from './shared/store/meta-reducers';
 import { LandingEffects } from './pages/landing-page/store/landing.effects';
+import { apiUrlInterceptor } from './shared/interceptors/api-url.interceptor';
+import {
+  DialogService,
+  DynamicDialogRef,
+  DynamicDialogConfig,
+} from 'primeng/dynamicdialog';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -35,11 +45,14 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     provideEffects([LandingEffects]),
-    provideHttpClient(withFetch()),
+    provideHttpClient(withFetch(), withInterceptors([apiUrlInterceptor])),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !environment.production,
       autoPause: true,
     }),
+    DialogService,
+    DynamicDialogRef,
+    DynamicDialogConfig,
   ],
 };

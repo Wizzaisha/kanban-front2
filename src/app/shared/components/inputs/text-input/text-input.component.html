@@ -8,40 +8,46 @@
       >{{ labelText }}</span
     >
   </div>
-  <input
-    [id]="id"
-    type="text"
-    [placeholder]="placeholder"
-    [formControl]="control"
-    (blur)="onBlur()"
-    class="input input-primary input-bordered bg-white flex items-center gap-2 w-full input-sm"
-    autocomplete="on"
-    [ngClass]="{
-      'input-error': !control!.valid && control.touched
-    }"
-    [readOnly]="readonly"
-  />
-</label>
 
-<div class="w-full text-start">
-  <small
-    *ngIf="control!.errors?.['required'] && control.touched"
-    class="text-error"
-    >Field required.</small
+  <label
+    class="input flex items-center gap-2 w-full input-sm"
+    [ngClass]="{
+      'input-error': !control!.valid && control.touched,
+      'input-neutral': control!.valid && !control.touched,
+      'mt-2': showLabel
+    }"
   >
-  <small
-    *ngIf="control!.errors?.['pattern'] && control.touched"
-    class="text-error"
-    >Value not valid.</small
-  >
-  <small
-    *ngIf="control!.errors?.['maxlength'] && control.touched"
-    class="text-error"
-    >Mimimum length not valid.</small
-  >
-  <small
-    *ngIf="control!.errors?.['minlength'] && control.touched"
-    class="text-error"
-    >Maximum length not valid.</small
-  >
-</div>
+    <input
+      [id]="id"
+      type="text"
+      [placeholder]="placeholder"
+      [formControl]="control"
+      (blur)="onBlur()"
+      class="grow"
+      autocomplete="on"
+      [readOnly]="readonly"
+    />
+    <div class="text-start">
+      <small
+        *ngIf="control!.errors?.['required'] && control.touched"
+        class="text-error"
+        >Can't be empty</small
+      >
+      <small
+        *ngIf="control!.errors?.['pattern'] && control.touched"
+        class="text-error"
+        >Value not valid</small
+      >
+      <small
+        *ngIf="control!.errors?.['maxlength'] && control.touched"
+        class="text-error"
+        >Mimimum length not valid</small
+      >
+      <small
+        *ngIf="control!.errors?.['minlength'] && control.touched"
+        class="text-error"
+        >Maximum length not valid</small
+      >
+    </div>
+  </label>
+</label>

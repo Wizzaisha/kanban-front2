@@ -1,0 +1,28 @@
+<div class="w-full">
+  <p class="pl-4">ALL BOARDS (3)</p>
+
+  <ul class="pr-10 mt-3">
+    @for (board of boards$ | async; track $index) {
+    <li>
+      <button
+        class="w-full btn btn-ghost rounded-l-none rounded-r-3xl flex justify-start items-center gap-3"
+        [ngClass]="{
+          'btn-primary': activeBoard === board.id,
+          'btn-ghost hover:text-secondary-content': activeBoard !== board.id
+        }"
+      >
+        <app-svg-icon iconName="icon-board"></app-svg-icon>
+        {{ board.name }}
+      </button>
+    </li>
+    }
+  </ul>
+
+  <button
+    class="w-full btn btn-ghost text-secondary-content rounded-l-none rounded-r-3xl flex justify-start items-center gap-3 hover:text-secondary-content"
+    (click)="handleOpenDialog('create')"
+  >
+    <app-svg-icon iconName="icon-board"></app-svg-icon>
+    + Create new board
+  </button>
+</div>

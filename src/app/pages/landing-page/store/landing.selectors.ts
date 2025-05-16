@@ -12,3 +12,13 @@ export const selectTheme = createSelector(
   selectState,
   (state) => state.currentTheme
 );
+
+export const selectAllBoards = createSelector(
+  selectState,
+  (state) => state.boards
+);
+
+export const selectActiveBoard = createSelector(
+  selectState,
+  (state) => state.activeBoard
+);
