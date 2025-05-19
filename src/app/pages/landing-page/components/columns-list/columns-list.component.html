@@ -1,0 +1,7 @@
+<p>columns-list works!</p>
+
+@if (currentColumns$ | async; as currentColumns) { @for (columns of
+currentColumns; track $index) {
+<p>{{ columns.name }}</p>
+
+} }

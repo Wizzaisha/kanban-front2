@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PrimaryButtonComponent } from '../../shared/components/buttons/primary-button/primary-button.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -10,15 +9,16 @@ import { CommonModule } from '@angular/common';
 import { LandingPageActions } from './store/action.types';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BoardsService } from './services/boards/boards.service';
+import { ColumnsListComponent } from './components/columns-list/columns-list.component';
 
 @Component({
   selector: 'app-landing-page',
   imports: [
-    PrimaryButtonComponent,
     NavbarComponent,
     SvgIconComponent,
     CommonModule,
     SidebarComponent,
+    ColumnsListComponent,
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css',
@@ -82,10 +82,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data) => {
-          console.log(data);
-
           this.store.dispatch(LandingPageActions.setBoards({ data: data }));
-
           this.store.dispatch(
             LandingPageActions.setActiveBoard({ data: data[0] })
           );

@@ -22,3 +22,8 @@ export const selectActiveBoard = createSelector(
   selectState,
   (state) => state.activeBoard
 );
+
+export const selectCurrentColumns = createSelector(
+  selectState,
+  (state) => state.currentColumns
+);

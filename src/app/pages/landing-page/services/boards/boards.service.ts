@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Boards } from '../../models/boards';
+import { Boards, FormBoard } from '../../models/boards';
 
 @Injectable({
   providedIn: 'root',
@@ -11,5 +11,9 @@ export class BoardsService {
 
   getAll(): Observable<Boards[]> {
     return this.http.get<Boards[]>('boards');
+  }
+
+  postBoard(dataToSave: FormBoard): Observable<Boards[]> {
+    return this.http.post<Boards[]>('boards', dataToSave);
   }
 }

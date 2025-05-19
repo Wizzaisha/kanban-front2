@@ -6,13 +6,7 @@
       <!-- Page content here -->
 
       <div class="w-full p-4">
-        <p class="text-3xl">Biboo</p>
-        <app-primary-button
-          text="Toggale"
-          (handleClick)="handleToggleTheme()"
-          toolTipText="Toggle"
-        >
-        </app-primary-button>
+        <app-columns-list></app-columns-list>
 
         @if (!showSidebar) {
         <button

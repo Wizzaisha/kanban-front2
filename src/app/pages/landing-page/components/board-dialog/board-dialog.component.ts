@@ -11,9 +11,14 @@ import {
 import { CommonModule } from '@angular/common';
 import { SecondaryButtonComponent } from '../../../../shared/components/buttons/secondary-button/secondary-button.component';
 import { PrimaryButtonComponent } from '../../../../shared/components/buttons/primary-button/primary-button.component';
-import { DynamicDialogComponent } from 'primeng/dynamicdialog';
+import {
+  DynamicDialogComponent,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
 import { SvgIconComponent } from '../../../../shared/components/svg-icon/svg-icon.component';
-import { FormBoard } from '../../models/boards';
+import { Boards, FormBoard } from '../../models/boards';
+import { BoardsService } from '../../services/boards/boards.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-board-dialog',
@@ -45,11 +50,22 @@ export class BoardDialogComponent implements OnInit {
     return this.form.get('columnsStatus') as FormArray;
   }
 
-  constructor(private fb: FormBuilder) {}
+  private unsubscribe$ = new Subject<void>();
+
+  constructor(
+    private fb: FormBuilder,
+    private boardsService: BoardsService,
+    public ref: DynamicDialogRef
+  ) {}
 
   ngOnInit(): void {
     this.loadDialogData();
     this.initForm();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   loadDialogData(): void {
@@ -97,6 +113,22 @@ export class BoardDialogComponent implements OnInit {
     if (this.form.valid) {
       const formData = this.form.getRawValue() as FormBoard;
       console.log(formData);
+
+      this.postBoard(formData);
     }
+  }
+
+  postBoard(dataToSave: FormBoard): void {
+    this.boardsService
+      .postBoard(dataToSave)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {
+          this.ref.close({ type: 'saved', newData: data });
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
   }
 }

@@ -10,6 +10,7 @@
           'btn-primary': activeBoard === board.id,
           'btn-ghost hover:text-secondary-content': activeBoard !== board.id
         }"
+        (click)="handleCurrentBoard(board)"
       >
         <app-svg-icon iconName="icon-board"></app-svg-icon>
         {{ board.name }}

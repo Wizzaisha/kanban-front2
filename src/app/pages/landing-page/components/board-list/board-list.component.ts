@@ -11,6 +11,7 @@ import {
 } from '../../store/landing.selectors';
 import { BoardDialogComponent } from '../board-dialog/board-dialog.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { LandingPageActions } from '../../store/action.types';
 
 @Component({
   selector: 'app-board-list',
@@ -50,6 +51,10 @@ export class BoardListComponent {
     });
   }
 
+  handleCurrentBoard(board: Boards): void {
+    this.store.dispatch(LandingPageActions.setActiveBoard({ data: board }));
+  }
+
   handleOpenDialog(type: 'create' | 'edit') {
     this.ref = this.dialogService.open(BoardDialogComponent, {
       focusOnShow: false,
@@ -61,6 +66,15 @@ export class BoardListComponent {
       data: {
         type: type,
       },
+    });
+
+    this.ref.onClose.pipe(takeUntil(this.unsubscribe$)).subscribe((result) => {
+      if (result) {
+        if (result.type === 'saved') {
+          const newBoard = result.newData as Boards;
+          this.store.dispatch(LandingPageActions.addBoard({ data: newBoard }));
+        }
+      }
     });
   }
 }
