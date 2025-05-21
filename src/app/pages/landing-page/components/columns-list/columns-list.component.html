@@ -1,7 +1,56 @@
-<p>columns-list works!</p>
+<div class="w-full h-full flex flex-col justify-center items-center">
+  @if (currentColumns$ | async; as currentColumns) { @if (currentColumns.length
+  === 0) {
+  <div class="w-full flex flex-col justify-center items-center gap-5">
+    <p class="text-neutral font-bold">
+      This board is empty. Create a new column to get started.
+    </p>
+    <app-primary-button
+      text="+ Add New Column"
+      widthClass="w-52"
+    ></app-primary-button>
+  </div>
 
-@if (currentColumns$ | async; as currentColumns) { @for (columns of
-currentColumns; track $index) {
-<p>{{ columns.name }}</p>
+  } @else {
 
-} }
+  <div class="w-full h-full flex flex-row justify-start items-start gap-5">
+    @for (columns of currentColumns; track $index) {
+    <div class="w-60 h-full">
+      <div
+        class="text-neutral font-bold flex flex-row justify-start items-center gap-3 mb-5"
+      >
+        <span
+          class="badge badge-xs"
+          [ngClass]="{
+              'badge-info': $index === 0,
+              'badge-primary': $index % 2 === 0 && $index !== 0,
+              'badge-success': $index % 2 !== 0,
+            }"
+        ></span>
+        <span>{{ columns.name.toUpperCase() }}</span>
+        <span>({{ columns.tasks.length }})</span>
+      </div>
+
+      @if (columns.tasks.length === 0) {
+      <p class="text-neutral font-bold">No tasks.</p>
+      }@else { @for (task of columns.tasks; track $index) {
+      <div class="card card-xs shadow-sm py-2 px-4 bg-base-100 cursor-pointer">
+        <p>{{ task.title }}</p>
+        <p class="text-neutral text-xs">
+          {{ task.totalSubtasksCompleted }} of {{ task.totalSubtasks }} subtasks
+        </p>
+      </div>
+      } }
+    </div>
+    }
+
+    <div
+      class="mt-11 h-[90%] w-60 card font-bold text-neutral text-3xl p-4 flex flex-col justify-center items-center cursor-pointer relative rounded-xl"
+    >
+      <div class="bg-neutral opacity-40 absolute inset-0 rounded-xl"></div>
+      <p>+ New Column</p>
+    </div>
+  </div>
+
+  } }
+</div>

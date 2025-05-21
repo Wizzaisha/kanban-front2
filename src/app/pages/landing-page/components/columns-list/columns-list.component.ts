@@ -10,10 +10,11 @@ import { ColumnsService } from '../../services/columns/columns.service';
 import { LandingPageActions } from '../../store/action.types';
 import { ColumnStatus } from '../../models/columnStatus';
 import { CommonModule } from '@angular/common';
+import { PrimaryButtonComponent } from '../../../../shared/components/buttons/primary-button/primary-button.component';
 
 @Component({
   selector: 'app-columns-list',
-  imports: [CommonModule],
+  imports: [CommonModule, PrimaryButtonComponent],
   templateUrl: './columns-list.component.html',
   styleUrl: './columns-list.component.css',
 })
@@ -56,9 +57,25 @@ export class ColumnsListComponent {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data) => {
-          console.log(data);
+          const newData = data.map((column) => {
+            return {
+              ...column,
+              tasks: column.tasks.map((task) => {
+                return {
+                  ...task,
+                  totalSubtasks: task.subtasks.length,
+                  totalSubtasksCompleted: task.subtasks.filter(
+                    (subtask) => subtask.completed
+                  ).length,
+                };
+              }),
+            };
+          });
+
+          console.log('columns', newData);
+
           this.store.dispatch(
-            LandingPageActions.setCurrentColumns({ data: data })
+            LandingPageActions.setCurrentColumns({ data: newData })
           );
         },
         error: (error) => {

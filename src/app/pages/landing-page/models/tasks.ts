@@ -6,6 +6,8 @@ export interface Task {
   description: string;
   columnStatusId: number;
   subtasks: FormSubtask[];
+  totalSubtasks: number;
+  totalSubtasksCompleted: number;
 }
 
 export interface FormTask {

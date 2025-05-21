@@ -1,10 +1,11 @@
 <button
-  class="btn btn-primary relative rounded-3xl text-2xl w-full"
+  class="btn btn-primary relative rounded-3xl text-2xl"
   (click)="clickAction($event)"
   [type]="type"
   [disabled]="disabled"
   [pTooltip]="toolTipText"
   tooltipPosition="top"
+  [ngClass]="widthClass"
 >
   @if (iconNamePg) {
   <span [className]="'pi-' + iconNamePg"></span>

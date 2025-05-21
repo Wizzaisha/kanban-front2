@@ -14,6 +14,7 @@ export class PrimaryButtonComponent {
   @Input() type: 'submit' | 'reset' | 'button' = 'button';
   @Input() disabled: boolean = false;
   @Input() iconNamePg: string | null = null;
+  @Input() widthClass: string = 'w-full';
   @Output() handleClick = new EventEmitter<MouseEvent>();
 
   @Input() showHighlight: boolean = false;
