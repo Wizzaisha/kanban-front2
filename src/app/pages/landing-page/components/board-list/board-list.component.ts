@@ -19,11 +19,12 @@ import { LandingPageActions } from '../../store/action.types';
   templateUrl: './board-list.component.html',
   styleUrl: './board-list.component.css',
   host: { ngSkipHydration: 'true' },
+  providers: [DialogService],
 })
 export class BoardListComponent {
   boards$!: Observable<Boards[]>;
-  activeBoard$!: Observable<number>;
-  activeBoard!: number;
+  activeBoard$!: Observable<number | null>;
+  activeBoard!: number | null;
 
   ref: DynamicDialogRef | undefined;
 
@@ -72,6 +73,10 @@ export class BoardListComponent {
       if (result) {
         if (result.type === 'saved') {
           const newBoard = result.newData as Boards;
+
+          this.store.dispatch(
+            LandingPageActions.setActiveBoard({ data: newBoard })
+          );
           this.store.dispatch(LandingPageActions.addBoard({ data: newBoard }));
         }
       }

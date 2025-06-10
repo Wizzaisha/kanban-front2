@@ -7,7 +7,7 @@ export interface LandingPageState {
   showSidebar: boolean;
   currentTheme: 'light' | 'dark';
   boards: Boards[];
-  activeBoard: number;
+  activeBoard: number | null;
   currentColumns: ColumnStatus[];
 }
 
@@ -15,7 +15,7 @@ export const landingPageInitialState: LandingPageState = {
   showSidebar: true,
   currentTheme: 'light',
   boards: [],
-  activeBoard: 0,
+  activeBoard: null,
   currentColumns: [],
 };
 
@@ -53,7 +53,7 @@ export const landingPageReducer = createReducer(
   on(LandingPageActions.setActiveBoard, (state, action) => {
     return {
       ...state,
-      activeBoard: action.data.id,
+      activeBoard: action.data!.id,
     };
   }),
 

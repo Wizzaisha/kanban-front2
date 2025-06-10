@@ -1,0 +1,74 @@
+<form
+  class="w-full flex flex-col justify-center items-start gap-3"
+  [formGroup]="form"
+>
+  <app-text-input
+    [control]="titleField"
+    placeholder="e.g. Take a coffee break"
+    id="titleField"
+    labelText="Title"
+    [showLabel]="true"
+    class="w-full"
+  ></app-text-input>
+
+  <app-text-area
+    [control]="descriptionField"
+    placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
+    id="descriptionField"
+    labelText="Description"
+    [showLabel]="true"
+    class="w-full"
+  ></app-text-area>
+
+  <p class="text-neutral-content text-2xl">Subtasks</p>
+
+  @if (subtasksFormArray.controls.length === 0) {
+  <p class="text-neutral text-xl">Subtasks are empty.</p>
+  }
+
+  <div class="w-full overflow-y-auto max-h-[10rem]">
+    @for (subtask of subtasksFormArray.controls; track $index) {
+
+    <div class="flex flex-row justify-start items-center gap-3 w-full">
+      <app-text-input
+        [control]="getFormArrayControl($index, 'title')"
+        placeholder="e.g. Make coffee"
+        [id]="'column' + $index"
+        labelText=""
+        [showLabel]="false"
+        class="w-full"
+      ></app-text-input>
+
+      <button class="btn btn-ghost px-2" (click)="handleDeleteSubtask($index)">
+        <app-svg-icon iconName="icon-cross"></app-svg-icon>
+      </button>
+    </div>
+
+    }
+  </div>
+
+  <app-secondary-button
+    text="+ Add New Subtask"
+    class="w-full"
+    (handleClick)="handleAddNewSubtask()"
+  ></app-secondary-button>
+
+  <app-select
+    [options]="columnStatusOptions"
+    optionLabel="name"
+    optionValue="id"
+    placeholder="e.g. Todo"
+    labelText="Status"
+    id="columnStatusIdField"
+    [showLabel]="true"
+    [control]="columnStatusIdField"
+    class="w-full"
+  >
+  </app-select>
+
+  <app-primary-button
+    text="Create Task"
+    class="w-full"
+    (handleClick)="handleCreateNewTask()"
+  ></app-primary-button>
+</form>

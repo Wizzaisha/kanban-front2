@@ -20,11 +20,6 @@ import { environment } from '../environments/environment.development';
 import { metaReducers } from './shared/store/meta-reducers';
 import { LandingEffects } from './pages/landing-page/store/landing.effects';
 import { apiUrlInterceptor } from './shared/interceptors/api-url.interceptor';
-import {
-  DialogService,
-  DynamicDialogRef,
-  DynamicDialogConfig,
-} from 'primeng/dynamicdialog';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -51,8 +46,5 @@ export const appConfig: ApplicationConfig = {
       logOnly: !environment.production,
       autoPause: true,
     }),
-    DialogService,
-    DynamicDialogRef,
-    DynamicDialogConfig,
   ],
 };

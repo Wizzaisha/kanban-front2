@@ -1,7 +1,7 @@
 <label class="form-control w-full">
   <div class="label" *ngIf="showLabel">
     <span
-      class="label-text"
+      class="label-text text-2xl"
       [ngClass]="{
         'text-error': control.enabled && !control.valid && control.touched
       }"
@@ -23,7 +23,7 @@
       [placeholder]="placeholder"
       [formControl]="control"
       (blur)="onBlur()"
-      class="grow"
+      class="grow placeholder-neutral placeholder:opacity-50"
       autocomplete="on"
       [readOnly]="readonly"
     />

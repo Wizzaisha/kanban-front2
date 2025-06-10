@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TextInputComponent } from '../../../../shared/components/inputs/text-input/text-input.component';
 import {
   FormArray,
@@ -13,6 +13,7 @@ import { SecondaryButtonComponent } from '../../../../shared/components/buttons/
 import { PrimaryButtonComponent } from '../../../../shared/components/buttons/primary-button/primary-button.component';
 import {
   DynamicDialogComponent,
+  DynamicDialogConfig,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
 import { SvgIconComponent } from '../../../../shared/components/svg-icon/svg-icon.component';
@@ -34,13 +35,14 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './board-dialog.component.css',
 })
 export class BoardDialogComponent implements OnInit {
+  config = inject(DynamicDialogConfig);
+  ref = inject(DynamicDialogRef);
+
   form!: FormGroup;
 
   type!: 'create' | 'edit';
 
   boardId!: string;
-
-  instance: DynamicDialogComponent | undefined;
 
   get nameField(): FormControl {
     return this.form.get('name') as FormControl;
@@ -52,11 +54,7 @@ export class BoardDialogComponent implements OnInit {
 
   private unsubscribe$ = new Subject<void>();
 
-  constructor(
-    private fb: FormBuilder,
-    private boardsService: BoardsService,
-    public ref: DynamicDialogRef
-  ) {}
+  constructor(private fb: FormBuilder, private boardsService: BoardsService) {}
 
   ngOnInit(): void {
     this.loadDialogData();
@@ -69,9 +67,9 @@ export class BoardDialogComponent implements OnInit {
   }
 
   loadDialogData(): void {
-    if (this.instance && this.instance.data) {
-      this.type = this.instance.data['type'];
-      this.boardId = this.instance.data['boardId'];
+    if (this.config && this.config.data) {
+      this.type = this.config.data['type'];
+      this.boardId = this.config.data['boardId'];
     }
   }
 

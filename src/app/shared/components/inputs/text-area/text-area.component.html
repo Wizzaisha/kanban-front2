@@ -1,0 +1,49 @@
+<fieldset class="fieldset w-full">
+  <div class="label" *ngIf="showLabel">
+    <span
+      class="label-text text-2xl"
+      [ngClass]="{
+        'text-error': control.enabled && !control.valid && control.touched
+      }"
+      >{{ labelText }}</span
+    >
+  </div>
+
+  <textarea
+    class="textarea h-24 w-full placeholder-neutral placeholder:opacity-50"
+    [ngClass]="{
+      'textarea-error': !control!.valid && control.touched,
+      'textarea-neutral': control!.valid && !control.touched,
+      'mt-2': showLabel
+    }"
+    [id]="id"
+    [placeholder]="placeholder"
+    [formControl]="control"
+    (blur)="onBlur()"
+    autocomplete="on"
+    [readOnly]="readonly"
+  ></textarea>
+
+  <div class="text-start">
+    <small
+      *ngIf="control!.errors?.['required'] && control.touched"
+      class="text-error"
+      >Can't be empty</small
+    >
+    <small
+      *ngIf="control!.errors?.['pattern'] && control.touched"
+      class="text-error"
+      >Value not valid</small
+    >
+    <small
+      *ngIf="control!.errors?.['maxlength'] && control.touched"
+      class="text-error"
+      >Mimimum length not valid</small
+    >
+    <small
+      *ngIf="control!.errors?.['minlength'] && control.touched"
+      class="text-error"
+      >Maximum length not valid</small
+    >
+  </div>
+</fieldset>

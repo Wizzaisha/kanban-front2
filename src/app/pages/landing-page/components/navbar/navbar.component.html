@@ -10,7 +10,11 @@
     </div>
 
     <div class="flex-none flex flex-row gap-5 justify-center items-center">
-      <app-primary-button text="+ Add New Task" toolTipText="+ Add New Task">
+      <app-primary-button
+        text="+ Add New Task"
+        toolTipText="+ Add New Task"
+        (handleClick)="handleAddNewTask('create')"
+      >
       </app-primary-button>
 
       <app-svg-icon iconName="icon-vertical-ellipsis"></app-svg-icon>

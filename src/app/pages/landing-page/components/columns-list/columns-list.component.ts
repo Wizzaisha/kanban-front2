@@ -19,8 +19,8 @@ import { PrimaryButtonComponent } from '../../../../shared/components/buttons/pr
   styleUrl: './columns-list.component.css',
 })
 export class ColumnsListComponent {
-  activeBoard$!: Observable<number>;
-  activeBoard!: number;
+  activeBoard$!: Observable<number | null>;
+  activeBoard!: number | null;
 
   currentColumns$!: Observable<ColumnStatus[]>;
 

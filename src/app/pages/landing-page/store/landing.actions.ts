@@ -23,7 +23,7 @@ export const setBoards = createAction(SET_BOARDS, props<{ data: Boards[] }>());
 
 export const setActiveBoard = createAction(
   SET_ACTIVE_BOARD,
-  props<{ data: Boards }>()
+  props<{ data: Boards | null }>()
 );
 
 export const addBoard = createAction(ADD_BOARD, props<{ data: Boards }>());

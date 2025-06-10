@@ -11,10 +11,10 @@
     class="w-full"
   ></app-text-input>
 
-  <p class="text-neutral-content">Columns</p>
+  <p class="text-neutral-content text-2xl">Columns</p>
 
   @if (columnsStatusArray.controls.length === 0) {
-  <p class="text-neutral text-sm">Columns are empty.</p>
+  <p class="text-neutral text-xl">Columns are empty.</p>
   }
 
   <div class="w-full overflow-y-auto max-h-[10rem]">
@@ -30,7 +30,7 @@
         class="w-full"
       ></app-text-input>
 
-      <button class="btn btn-ghost px-1" (click)="handleDeleteColumn($index)">
+      <button class="btn btn-ghost px-2" (click)="handleDeleteColumn($index)">
         <app-svg-icon iconName="icon-cross"></app-svg-icon>
       </button>
     </div>

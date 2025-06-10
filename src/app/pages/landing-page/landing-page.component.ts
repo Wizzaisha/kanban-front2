@@ -83,9 +83,12 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           this.store.dispatch(LandingPageActions.setBoards({ data: data }));
-          this.store.dispatch(
-            LandingPageActions.setActiveBoard({ data: data[0] })
-          );
+
+          if (data[0]) {
+            this.store.dispatch(
+              LandingPageActions.setActiveBoard({ data: data[0] || null })
+            );
+          }
         },
         error: (error) => {
           console.log(error);

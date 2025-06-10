@@ -1,0 +1,57 @@
+<fieldset class="fieldset">
+  <legend class="fieldset-legend" *ngIf="showLabel">
+    <span
+      class="label-text text-2xl"
+      [ngClass]="{
+        'text-error': !control!.valid && control.touched,
+        'text-primary font-bold': changeColor
+      }"
+      >{{ labelText }}</span
+    >
+  </legend>
+  <p-select
+    [formControl]="control"
+    [options]="options"
+    [optionLabel]="optionLabel"
+    [optionValue]="optionValue"
+    [placeholder]="placeholder"
+    [filter]="activateFilter"
+    [filterBy]="optionLabel"
+    [showClear]="true"
+    [styleClass]="
+      !control!.valid && control.touched ? stylesClassError : stylesClassPrimary
+    "
+    [virtualScroll]="true"
+    [virtualScrollItemSize]="38"
+    [appendTo]="appendTo"
+    [readonly]="readonly"
+    (onChange)="onChange($event)"
+  >
+    <ng-template pTemplate="selectedItem" let-option>
+      <p [pTooltip]="option[optionLabel]" tooltipPosition="top">
+        {{ formatLongText(option[optionLabel], textLength) }}
+      </p>
+    </ng-template>
+    <ng-template let-option pTemplate="item">
+      <!-- 				[style.color]="option.titulo ? 'white' : 'black'"
+ -->
+      <div
+        [style.textAlign]="option.titulo ? 'center' : 'initial'"
+        [ngClass]="{ 
+				'bg-blue-700 text-white text-center': option.suma && option.titulo,
+				'bg-yellow-500 text-black text-center': !option.suma  && option.titulo,
+			 }"
+      >
+        {{ option[optionLabel] }}
+      </div>
+    </ng-template>
+  </p-select>
+
+  <div class="w-full text-start">
+    <small
+      *ngIf="control!.errors?.['required'] && control.touched"
+      class="text-error"
+      >Can't be empty..</small
+    >
+  </div>
+</fieldset>
