@@ -67,7 +67,7 @@
   </app-select>
 
   <app-primary-button
-    text="Create Task"
+    [text]="type === 'create' ? 'Create Task' : 'Edit Task'"
     class="w-full"
     (handleClick)="handleCreateNewTask()"
   ></app-primary-button>

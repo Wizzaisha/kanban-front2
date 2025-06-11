@@ -57,6 +57,7 @@ export class SelectComponent
   @Input() appendTo: string = 'body';
   @Input() textLength: number = 50;
   @Input() activateFilter: boolean = false;
+  @Input() showClear: boolean = true;
   @Output() change = new EventEmitter<SelectChangeEvent>();
   @Output() selectedItemChange = new EventEmitter<any>();
 

@@ -8,6 +8,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../shared/store/app.reducer';
 import {
+  selectActiveBoard,
   selectCurrentColumns,
   selectShowSidebar,
   selectTheme,
@@ -41,6 +42,8 @@ export class NavbarComponent implements OnInit {
   currentTheme$!: Observable<'light' | 'dark'>;
   currentColumns$!: Observable<ColumnStatus[]>;
   currentColumns!: ColumnStatus[];
+  activeBoard$!: Observable<number | null>;
+  activeBoard!: number | null;
 
   ref: DynamicDialogRef | undefined;
 
@@ -72,6 +75,10 @@ export class NavbarComponent implements OnInit {
       .subscribe((data) => {
         this.currentColumns = data;
       });
+    this.activeBoard$ = this.store.select(selectActiveBoard);
+    this.activeBoard$.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
+      this.activeBoard = data;
+    });
   }
 
   handleAddNewTask(type: 'create' | 'edit'): void {
@@ -85,6 +92,7 @@ export class NavbarComponent implements OnInit {
       data: {
         type: type,
         currentColumns: this.currentColumns,
+        task: undefined,
       },
     });
 

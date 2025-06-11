@@ -24,6 +24,8 @@ import { ColumnStatus } from '../../models/columnStatus';
 import { SelectComponent } from '../../../../shared/components/selects/select/select.component';
 import { FormTask, Task } from '../../models/tasks';
 import { TasksService } from '../../services/tasks/tasks.service';
+import { SubtasksService } from '../../services/subtasks/subtasks.service';
+import { Subtask } from '../../models/subtask';
 
 @Component({
   selector: 'app-create-task',
@@ -45,6 +47,7 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
   ref = inject(DynamicDialogRef);
 
   type!: 'create' | 'edit';
+  taskToEdit?: Task;
 
   form!: FormGroup;
 
@@ -72,7 +75,11 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder, private taskService: TasksService) {}
+  constructor(
+    private fb: FormBuilder,
+    private taskService: TasksService,
+    private subtaskService: SubtasksService
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -88,6 +95,10 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
     if (this.config && this.config.data) {
       this.type = this.config.data['type'];
       this.columnStatusOptions = this.config.data['currentColumns'];
+      this.taskToEdit = this.config.data['task'];
+
+      if (this.type === 'edit' && this.taskToEdit)
+        this.patchForm(this.taskToEdit);
     }
   }
 
@@ -98,6 +109,26 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
       description: ['', Validators.required],
       columnStatusId: [null, Validators.required],
       subtasks: this.fb.array([]),
+    });
+  }
+
+  patchForm(taskToEdit: Task): void {
+    this.form.patchValue({
+      id: taskToEdit.id,
+      title: taskToEdit.title,
+      description: taskToEdit.description,
+      columnStatusId: taskToEdit.columnStatusId,
+    });
+
+    taskToEdit.subtasks.forEach((subtask) => {
+      const subtaskForm = this.fb.group({
+        id: subtask.id,
+        title: subtask.title,
+        taskId: subtask.taskId,
+        completed: subtask.completed,
+      });
+
+      this.subtasksFormArray.push(subtaskForm);
     });
   }
 
@@ -113,6 +144,13 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteSubtask(index: number): void {
+    if (this.type === 'edit') {
+      const findSubtask = this.subtasksFormArray
+        .at(index)
+        .getRawValue() as Subtask;
+      this.deleteSubtask(findSubtask.id);
+    }
+
     this.subtasksFormArray.removeAt(index);
   }
 
@@ -122,7 +160,12 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
 
     if (this.form.valid) {
       const formData = this.form.getRawValue() as FormTask;
-      this.postTask(formData);
+
+      if (this.type === 'create') {
+        this.postTask(formData);
+      } else if (this.type === 'edit') {
+        this.putTask(formData);
+      }
     }
   }
 
@@ -134,6 +177,32 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
         next: (data) => {
           this.ref.close({ type: 'saved', newData: data });
         },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+  }
+
+  putTask(dataToSave: FormTask): void {
+    this.taskService
+      .putTask(dataToSave)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {
+          this.ref.close({ type: 'saved', newData: data });
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+  }
+
+  deleteSubtask(idToDelete: number): void {
+    this.subtaskService
+      .deleteSubtask(idToDelete)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {},
         error: (error) => {
           console.log(error);
         },

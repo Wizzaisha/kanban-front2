@@ -12,4 +12,12 @@ export class TasksService {
   postTask(dataToSave: FormTask): Observable<Task> {
     return this.http.post<Task>('tasks', dataToSave);
   }
+
+  putTask(dataToSave: FormTask): Observable<Task> {
+    return this.http.put<Task>(`tasks/${dataToSave.id}`, dataToSave);
+  }
+
+  deleteTask(idToDelete: number): Observable<any> {
+    return this.http.delete<any>(`tasks/${idToDelete}`);
+  }
 }

@@ -1,0 +1,93 @@
+<form
+  class="w-full flex flex-col justify-center items-start gap-3 text-neutral pt-5"
+  [formGroup]="form"
+>
+  <div class="w-full flex flex-row justify-between items-center">
+    <h2 class="flex-1 text-3xl text-base-content font-bold">
+      {{ taskData.title }}
+    </h2>
+
+    <div>
+      <button class="btn btn-ghost w-7" (click)="op.toggle($event)">
+        <app-svg-icon iconName="icon-vertical-ellipsis"></app-svg-icon>
+      </button>
+
+      <p-popover #op>
+        <div class="w-28 flex flex-col gap-3">
+          <button
+            class="w-full btn btn-ghost text-center text-neutral flex items-center justify-start"
+            (click)="handleEditTask('edit', taskData)"
+          >
+            Edit Task
+          </button>
+          <button
+            class="w-full btn btn-ghost text-error flex items-center justify-start"
+            (click)="handleDeleteTask()"
+          >
+            Delete Task
+          </button>
+        </div>
+      </p-popover>
+    </div>
+  </div>
+
+  <p class="w-full text-2xl break-words whitespace-normal mt-3">
+    {{ taskData.description }}
+  </p>
+
+  <div class="w-full text-2xl flex flex-col gap-3 mt-3">
+    <p class="font-bold">
+      Subtasks ({{ taskData.totalSubtasksCompleted }} of
+      {{ taskData.totalSubtasks }})
+    </p>
+    <div class="w-full" formArrayName="subtasks">
+      @for (subtasks of subtasksFormArray.controls; track $index; let i =
+      $index) {
+
+      <fieldset
+        class="fieldset w-full p-2 relative rounded-sm mb-3"
+        [formGroupName]="i"
+      >
+        <div
+          class="w-full bg-primary opacity-7 absolute inset-0 rounded-sm"
+        ></div>
+        <label
+          class="label text-xl font-bold"
+          [ngClass]="{
+            'line-through': getFormArrayControl(
+              $index,
+              'completed'
+            ).getRawValue()
+          }"
+        >
+          <input
+            [id]="i + 'subtask'"
+            type="checkbox"
+            formControlName="completed"
+            class="checkbox checkbox-primary"
+            (change)="handleSubtaskCompleteChange(i)"
+          />
+          {{ getFormArrayControl($index, "title").getRawValue() }}
+        </label>
+      </fieldset>
+      }
+    </div>
+
+    <p class="font-bold">Current Status</p>
+
+    <app-select
+      [options]="currentColumns"
+      optionLabel="name"
+      optionValue="id"
+      placeholder="e.g. Todo"
+      labelText="Status"
+      id="columnStatusIdField"
+      [showLabel]="false"
+      [showClear]="false"
+      [control]="columnStatusIdField"
+      class="w-full"
+      (change)="handleChangeColumn($event)"
+    >
+    </app-select>
+  </div>
+</form>

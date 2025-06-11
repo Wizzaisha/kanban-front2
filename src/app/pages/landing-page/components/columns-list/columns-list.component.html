@@ -8,6 +8,7 @@
     <app-primary-button
       text="+ Add New Column"
       widthClass="w-52"
+      [disabled]="!activeBoard"
     ></app-primary-button>
   </div>
 
@@ -34,14 +35,15 @@
       @if (columns.tasks.length === 0) {
       <p class="text-neutral font-bold">No tasks.</p>
       }@else { @for (task of columns.tasks; track $index) {
-      <div
-        class="card card-xs py-4 px-4 bg-base-100 cursor-pointer mt-5 shadow-md"
+      <button
+        class="w-full card card-xs py-4 px-4 bg-base-100 cursor-pointer mt-5 shadow-md"
+        (click)="handleViewTask(task)"
       >
         <p class="font-bold">{{ task.title }}</p>
         <p class="text-neutral text-xs">
           {{ task.totalSubtasksCompleted }} of {{ task.totalSubtasks }} subtasks
         </p>
-      </div>
+      </button>
       } }
     </div>
     }
