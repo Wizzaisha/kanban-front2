@@ -1,1 +1,22 @@
-<p>delete-confirmation works!</p>
+<div class="w-full rounded-3xl">
+  <div
+    class="overflow-y-auto h-[15rem] flex flex-col justify-center items-center"
+  >
+    <p>{{ message }}</p>
+  </div>
+
+  <div class="w-full flex flex-row justify-between items-center mt-2 gap-5">
+    <app-error-button
+      text="Delete"
+      class="w-full"
+      (handleClick)="handleContinue()"
+    >
+    </app-error-button>
+    <app-secondary-button
+      text="Cancel"
+      class="w-full"
+      (handleClick)="handleCancel()"
+    >
+    </app-secondary-button>
+  </div>
+</div>

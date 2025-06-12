@@ -21,6 +21,7 @@ export class ThemeService {
 
   setTheme(theme: 'light' | 'dark'): void {
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('class', theme);
 
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem(this.themeKey, theme);

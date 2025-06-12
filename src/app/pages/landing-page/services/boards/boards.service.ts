@@ -16,4 +16,12 @@ export class BoardsService {
   postBoard(dataToSave: FormBoard): Observable<Boards[]> {
     return this.http.post<Boards[]>('boards', dataToSave);
   }
+
+  putBoard(dataToSave: FormBoard): Observable<Boards[]> {
+    return this.http.put<Boards[]>(`boards/${dataToSave.id}`, dataToSave);
+  }
+
+  deleteBoard(idToDelete: number): Observable<any> {
+    return this.http.delete<any>(`boards/${idToDelete}`);
+  }
 }

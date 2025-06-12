@@ -7,6 +7,8 @@ const SET_THEME = '[Set Lading Page] Set Theme';
 const SET_BOARDS = '[Set Lading Page] Set Boards';
 const ADD_BOARD = '[Add Lading Page] Add New Board';
 const SET_ACTIVE_BOARD = '[Set Lading Page] Set Active Board';
+const RESET_ACTIVE_BOARD = '[Reset Lading Page] Reset Active Board';
+
 const SET_CURRENT_COLUMNS = '[Set Lading Page] Set Current Columns';
 
 export const setShowSidebar = createAction(
@@ -25,6 +27,8 @@ export const setActiveBoard = createAction(
   SET_ACTIVE_BOARD,
   props<{ data: Boards | null }>()
 );
+
+export const resetActiveBoard = createAction(RESET_ACTIVE_BOARD);
 
 export const addBoard = createAction(ADD_BOARD, props<{ data: Boards }>());
 

@@ -13,7 +13,9 @@
         (click)="handleCurrentBoard(board)"
       >
         <app-svg-icon iconName="icon-board"></app-svg-icon>
-        {{ board.name }}
+        <span [pTooltip]="board.name">{{
+          formatLongText(board.name, 15)
+        }}</span>
       </button>
     </li>
     }

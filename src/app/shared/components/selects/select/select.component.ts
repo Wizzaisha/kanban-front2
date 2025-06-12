@@ -68,9 +68,9 @@ export class SelectComponent
   };
 
   stylesClassPrimary: string =
-    'select select-neutral bg-white w-full select-sm px-0';
+    'select select-neutral bg-white w-full select-sm px-0 rounded-xs border-neutral';
   stylesClassError: string =
-    'select select-error bg-white w-full select-sm px-0';
+    'select select-error bg-white w-full select-sm px-0 rounded-xs border-error';
 
   onChange(event: SelectChangeEvent) {
     this.change.emit(event);

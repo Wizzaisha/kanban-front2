@@ -12,10 +12,14 @@ import {
 import { BoardDialogComponent } from '../board-dialog/board-dialog.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LandingPageActions } from '../../store/action.types';
+import { ColumnsService } from '../../services/columns/columns.service';
+import { BoardsService } from '../../services/boards/boards.service';
+import { truncateText } from '../../../../shared/utils/truncateText';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-board-list',
-  imports: [CommonModule, SvgIconComponent],
+  imports: [CommonModule, SvgIconComponent, TooltipModule],
   templateUrl: './board-list.component.html',
   styleUrl: './board-list.component.css',
   host: { ngSkipHydration: 'true' },
@@ -32,7 +36,8 @@ export class BoardListComponent {
 
   constructor(
     private store: Store<AppState>,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private boardsService: BoardsService
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +67,7 @@ export class BoardListComponent {
       modal: true,
       closable: true,
       header: type === 'create' ? 'Add New Board' : 'Edit board',
-      width: '30vw',
+      width: '40vw',
       styleClass: 'text-primary',
       data: {
         type: type,
@@ -74,12 +79,31 @@ export class BoardListComponent {
         if (result.type === 'saved') {
           const newBoard = result.newData as Boards;
 
-          this.store.dispatch(
-            LandingPageActions.setActiveBoard({ data: newBoard })
-          );
-          this.store.dispatch(LandingPageActions.addBoard({ data: newBoard }));
+          this.getAllBoards(newBoard);
         }
       }
     });
+  }
+
+  getAllBoards(board: Boards): void {
+    this.boardsService
+      .getAll()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {
+          this.store.dispatch(LandingPageActions.setBoards({ data: data }));
+
+          this.store.dispatch(
+            LandingPageActions.setActiveBoard({ data: board })
+          );
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+  }
+
+  formatLongText(text: string, maxLength: number): string {
+    return truncateText(text, maxLength);
   }
 }

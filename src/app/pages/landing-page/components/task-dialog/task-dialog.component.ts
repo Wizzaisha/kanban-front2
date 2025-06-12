@@ -25,6 +25,9 @@ import {
 import { CommonModule } from '@angular/common';
 import { TasksService } from '../../services/tasks/tasks.service';
 import { PopoverModule } from 'primeng/popover';
+import { DeleteConfirmationComponent } from '../../../../shared/components/dialogs/delete-confirmation/delete-confirmation.component';
+import { truncateText } from '../../../../shared/utils/truncateText';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-task-dialog',
@@ -34,6 +37,7 @@ import { PopoverModule } from 'primeng/popover';
     ReactiveFormsModule,
     CommonModule,
     PopoverModule,
+    TooltipModule,
   ],
   templateUrl: './task-dialog.component.html',
   styleUrl: './task-dialog.component.css',
@@ -50,6 +54,7 @@ export class TaskDialogComponent {
   taskService = inject(TasksService);
 
   editionDialogRef: DynamicDialogRef | undefined;
+  deleteDialogRef: DynamicDialogRef | undefined;
 
   get columnStatusIdField(): FormControl {
     return this.form.get('columnStatusId') as FormControl;
@@ -142,7 +147,7 @@ export class TaskDialogComponent {
       modal: true,
       closable: true,
       header: type === 'create' ? 'Add New Task' : 'Edit task',
-      width: '30vw',
+      width: '40vw',
       styleClass: 'text-primary',
       data: {
         type: type,
@@ -169,7 +174,33 @@ export class TaskDialogComponent {
   }
 
   handleDeleteTask(): void {
-    this.deleteTask(this.taskData.id);
+    this.deleteDialogRef = this.dialogService.open(
+      DeleteConfirmationComponent,
+      {
+        focusOnShow: false,
+        modal: true,
+        closable: true,
+        header: 'Delete this task?',
+        width: '40vw',
+        styleClass: 'text-primary',
+        data: {
+          message: `Are you sure you want to delete the '${this.formatLongText(
+            this.taskData.title,
+            30
+          )}' task and its subtasks? This action cannot be reversed.`,
+        },
+      }
+    );
+
+    this.deleteDialogRef.onClose
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        if (result) {
+          if (result.type === 'continue') {
+            this.deleteTask(this.taskData.id);
+          }
+        }
+      });
   }
 
   getColumnsById(boardId: number): void {
@@ -223,10 +254,16 @@ export class TaskDialogComponent {
       .deleteTask(idToDelete)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (data) => {},
+        next: (data) => {
+          this.ref.close({ type: 'deletedTask' });
+        },
         error: (error) => {
           console.log(error);
         },
       });
+  }
+
+  formatLongText(text: string, maxLength: number): string {
+    return truncateText(text, maxLength);
   }
 }

@@ -16,6 +16,7 @@ export class LandingEffects {
         ofType(LandingPageActions.setTheme),
         tap(({ theme }) => {
           document.documentElement.setAttribute('data-theme', theme);
+          document.documentElement.setAttribute('class', theme);
           this.themeService.setTheme(theme);
         })
       );

@@ -20,10 +20,10 @@
     class="w-full"
   ></app-text-area>
 
-  <p class="text-neutral-content text-2xl">Subtasks</p>
+  <p class="text-base-content text-2xl">Subtasks</p>
 
   @if (subtasksFormArray.controls.length === 0) {
-  <p class="text-neutral text-xl">Subtasks are empty.</p>
+  <p class="text-base-content text-xl">Subtasks are empty.</p>
   }
 
   <div class="w-full overflow-y-auto max-h-[10rem]">
@@ -53,18 +53,21 @@
     (handleClick)="handleAddNewSubtask()"
   ></app-secondary-button>
 
-  <app-select
-    [options]="columnStatusOptions"
-    optionLabel="name"
-    optionValue="id"
-    placeholder="e.g. Todo"
-    labelText="Status"
-    id="columnStatusIdField"
-    [showLabel]="true"
-    [control]="columnStatusIdField"
-    class="w-full"
-  >
-  </app-select>
+  <div class="w-full">
+    <p class="text-base-content text-2xl">Status</p>
+    <app-select
+      [options]="columnStatusOptions"
+      optionLabel="name"
+      optionValue="id"
+      placeholder="e.g. Todo"
+      labelText="Status"
+      id="columnStatusIdField"
+      [showLabel]="false"
+      [control]="columnStatusIdField"
+      class="w-full"
+    >
+    </app-select>
+  </div>
 
   <app-primary-button
     [text]="type === 'create' ? 'Create Task' : 'Edit Task'"

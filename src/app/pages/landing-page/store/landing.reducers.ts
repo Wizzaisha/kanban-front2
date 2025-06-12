@@ -57,6 +57,13 @@ export const landingPageReducer = createReducer(
     };
   }),
 
+  on(LandingPageActions.resetActiveBoard, (state, _action) => {
+    return {
+      ...state,
+      activeBoard: null,
+    };
+  }),
+
   on(LandingPageActions.setCurrentColumns, (state, action) => {
     return {
       ...state,

@@ -6,7 +6,7 @@
   }
   <div class="flex-1 flex flex-row justify-start items-center h-full px-10">
     <div class="flex-1">
-      <h1 class="text-4xl font-bold">Platform Launch</h1>
+      <h1 class="text-4xl font-bold">{{ currentBoard.name }}</h1>
     </div>
 
     <div class="flex-none flex flex-row gap-5 justify-center items-center">
@@ -18,7 +18,28 @@
       >
       </app-primary-button>
 
-      <app-svg-icon iconName="icon-vertical-ellipsis"></app-svg-icon>
+      <div>
+        <button class="btn btn-ghost w-7" (click)="op.toggle($event)">
+          <app-svg-icon iconName="icon-vertical-ellipsis"></app-svg-icon>
+        </button>
+
+        <p-popover #op>
+          <div class="w-32 flex flex-col gap-3">
+            <button
+              class="w-full btn btn-ghost text-center text-base-content flex items-center justify-start"
+              (click)="handleEditBoard()"
+            >
+              Edit Board
+            </button>
+            <button
+              class="w-full btn btn-ghost text-error flex items-center justify-start"
+              (click)="handleDeleteBoard()"
+            >
+              Delete Board
+            </button>
+          </div>
+        </p-popover>
+      </div>
     </div>
   </div>
 </div>

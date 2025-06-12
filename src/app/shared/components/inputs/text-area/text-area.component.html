@@ -1,7 +1,7 @@
 <fieldset class="fieldset w-full">
   <div class="label" *ngIf="showLabel">
     <span
-      class="label-text text-2xl"
+      class="label-text text-2xl text-base-content"
       [ngClass]="{
         'text-error': control.enabled && !control.valid && control.touched
       }"
@@ -12,8 +12,8 @@
   <textarea
     class="textarea h-24 w-full placeholder-neutral placeholder:opacity-50"
     [ngClass]="{
-      'textarea-error': !control!.valid && control.touched,
-      'textarea-neutral': control!.valid && !control.touched,
+      'textarea-error border-error': !control!.valid && control.touched,
+      'textarea-neutral border-neutral': control!.valid && !control.touched,
       'mt-2': showLabel
     }"
     [id]="id"

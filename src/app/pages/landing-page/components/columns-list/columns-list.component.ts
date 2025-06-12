@@ -15,10 +15,12 @@ import { Task } from '../../models/tasks';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CreateTaskComponent } from '../create-task/create-task.component';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
+import { truncateText } from '../../../../shared/utils/truncateText';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-columns-list',
-  imports: [CommonModule, PrimaryButtonComponent],
+  imports: [CommonModule, PrimaryButtonComponent, TooltipModule],
   templateUrl: './columns-list.component.html',
   styleUrl: './columns-list.component.css',
   providers: [DialogService],
@@ -52,6 +54,7 @@ export class ColumnsListComponent {
   selectStoreData(): void {
     this.activeBoard$ = this.store.select(selectActiveBoard);
     this.activeBoard$.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
+      console.log('active board', data);
       this.activeBoard = data;
       if (data) {
         this.getColumnsById(data);
@@ -72,13 +75,21 @@ export class ColumnsListComponent {
       closable: false,
       showHeader: false,
       dismissableMask: true,
-      width: '30vw',
+      width: '40vw',
       styleClass: 'text-primary',
       data: {
         currentColumns: this.currentColumns,
         task: task,
         activeBoard: this.activeBoard,
       },
+    });
+
+    this.ref.onClose.pipe(takeUntil(this.unsubscribe$)).subscribe((result) => {
+      if (result) {
+        if (result.type === 'deletedTask') {
+          if (this.activeBoard) this.getColumnsById(this.activeBoard);
+        }
+      }
     });
   }
 
@@ -111,5 +122,9 @@ export class ColumnsListComponent {
           console.log(error);
         },
       });
+  }
+
+  formatLongText(text: string, maxLength: number): string {
+    return truncateText(text, maxLength);
   }
 }

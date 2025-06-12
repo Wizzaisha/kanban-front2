@@ -12,4 +12,8 @@ export class ColumnsService {
   getColumnsById(boardId: number): Observable<ColumnStatus[]> {
     return this.http.get<ColumnStatus[]>(`columns/${boardId}`);
   }
+
+  deleteColumns(idToDelete: number): Observable<any> {
+    return this.http.delete<any>(`columns/${idToDelete}`);
+  }
 }

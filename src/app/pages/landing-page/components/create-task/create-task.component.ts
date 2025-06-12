@@ -144,14 +144,14 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteSubtask(index: number): void {
-    if (this.type === 'edit') {
+    if (this.type === 'create') {
+      this.subtasksFormArray.removeAt(index);
+    } else {
       const findSubtask = this.subtasksFormArray
         .at(index)
         .getRawValue() as Subtask;
-      this.deleteSubtask(findSubtask.id);
+      this.deleteSubtask(findSubtask.id, index);
     }
-
-    this.subtasksFormArray.removeAt(index);
   }
 
   handleCreateNewTask(): void {
@@ -197,12 +197,14 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteSubtask(idToDelete: number): void {
+  deleteSubtask(idToDelete: number, index: number): void {
     this.subtaskService
       .deleteSubtask(idToDelete)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (data) => {},
+        next: (data) => {
+          this.subtasksFormArray.removeAt(index);
+        },
         error: (error) => {
           console.log(error);
         },

@@ -2,7 +2,7 @@
   @if (currentColumns$ | async; as currentColumns) { @if (currentColumns.length
   === 0) {
   <div class="w-full flex flex-col justify-center items-center gap-5">
-    <p class="text-neutral font-bold">
+    <p class="text-base-content font-bold">
       This board is empty. Create a new column to get started.
     </p>
     <app-primary-button
@@ -14,11 +14,13 @@
 
   } @else {
 
-  <div class="w-full h-full flex flex-row justify-start items-start gap-5">
+  <div
+    class="max-w-[100%] h-full flex flex-row justify-start items-start gap-5 overflow-x-auto"
+  >
     @for (columns of currentColumns; track $index) {
-    <div class="w-60 h-full">
+    <div class="min-w-60 h-full">
       <div
-        class="text-neutral font-bold flex flex-row justify-start items-center gap-3 mb-5"
+        class="text-base-content font-bold flex flex-row justify-start items-center gap-3 mb-5"
       >
         <span
           class="badge badge-xs"
@@ -28,19 +30,23 @@
               'badge-success': $index % 2 !== 0,
             }"
         ></span>
-        <span>{{ columns.name.toUpperCase() }}</span>
+        <span [pTooltip]="columns.name">{{
+          formatLongText(columns.name.toUpperCase(), 10)
+        }}</span>
         <span>({{ columns.tasks.length }})</span>
       </div>
 
       @if (columns.tasks.length === 0) {
-      <p class="text-neutral font-bold">No tasks.</p>
+      <p class="text-base-content font-bold">No tasks.</p>
       }@else { @for (task of columns.tasks; track $index) {
       <button
-        class="w-full card card-xs py-4 px-4 bg-base-100 cursor-pointer mt-5 shadow-md"
+        class="w-full card card-xs py-4 px-4 bg-base-100 cursor-pointer mt-5 shadow-md text-start"
         (click)="handleViewTask(task)"
       >
-        <p class="font-bold">{{ task.title }}</p>
-        <p class="text-neutral text-xs">
+        <p class="font-bold" [pTooltip]="task.title">
+          {{ formatLongText(task.title, 30) }}
+        </p>
+        <p class="text-base-content text-xs">
           {{ task.totalSubtasksCompleted }} of {{ task.totalSubtasks }} subtasks
         </p>
       </button>
@@ -49,7 +55,7 @@
     }
 
     <div
-      class="mt-11 h-[90%] w-60 card font-bold text-neutral text-3xl p-4 flex flex-col justify-center items-center relative rounded-xl"
+      class="mt-11 h-[90%] min-w-60 card font-bold text-base-content text-3xl p-4 flex flex-col justify-center items-center relative rounded-xl"
     >
       <div class="bg-neutral opacity-40 absolute inset-0 rounded-xl"></div>
       <p>+ New Column</p>
