@@ -4,6 +4,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { AppState } from '../../../../shared/store/app.reducer';
 import {
   selectActiveBoard,
+  selectColumnsLoading,
   selectCurrentColumns,
 } from '../../store/landing.selectors';
 import { ColumnsService } from '../../services/columns/columns.service';
@@ -13,14 +14,19 @@ import { CommonModule } from '@angular/common';
 import { PrimaryButtonComponent } from '../../../../shared/components/buttons/primary-button/primary-button.component';
 import { Task } from '../../models/tasks';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { CreateTaskComponent } from '../create-task/create-task.component';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 import { truncateText } from '../../../../shared/utils/truncateText';
 import { TooltipModule } from 'primeng/tooltip';
+import { ColumnsSkeletonComponent } from '../../../../shared/components/skeletons/columns-skeleton/columns-skeleton.component';
 
 @Component({
   selector: 'app-columns-list',
-  imports: [CommonModule, PrimaryButtonComponent, TooltipModule],
+  imports: [
+    CommonModule,
+    PrimaryButtonComponent,
+    TooltipModule,
+    ColumnsSkeletonComponent,
+  ],
   templateUrl: './columns-list.component.html',
   styleUrl: './columns-list.component.css',
   providers: [DialogService],
@@ -31,6 +37,9 @@ export class ColumnsListComponent {
 
   currentColumns$!: Observable<ColumnStatus[]>;
   currentColumns!: ColumnStatus[];
+
+  isLoading$!: Observable<boolean>;
+  isLoading!: boolean;
 
   ref: DynamicDialogRef | undefined;
 
@@ -54,10 +63,11 @@ export class ColumnsListComponent {
   selectStoreData(): void {
     this.activeBoard$ = this.store.select(selectActiveBoard);
     this.activeBoard$.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
-      console.log('active board', data);
       this.activeBoard = data;
       if (data) {
         this.getColumnsById(data);
+      } else {
+        this.store.dispatch(LandingPageActions.setCurrentColumns({ data: [] }));
       }
     });
     this.currentColumns$ = this.store.select(selectCurrentColumns);
@@ -66,6 +76,21 @@ export class ColumnsListComponent {
       .subscribe((data) => {
         this.currentColumns = data;
       });
+    this.isLoading$ = this.store.select(selectColumnsLoading);
+    this.isLoading$.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
+      this.isLoading = data;
+    });
+  }
+
+  handleDialogWith(): string {
+    let width = '40vw';
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) {
+      width = '90vw';
+    } else if (screenWidth <= 1024) {
+      width = '70vw';
+    }
+    return width;
   }
 
   handleViewTask(task: Task): void {
@@ -75,7 +100,7 @@ export class ColumnsListComponent {
       closable: false,
       showHeader: false,
       dismissableMask: true,
-      width: '40vw',
+      width: this.handleDialogWith(),
       styleClass: 'text-primary',
       data: {
         currentColumns: this.currentColumns,
@@ -94,6 +119,9 @@ export class ColumnsListComponent {
   }
 
   getColumnsById(boardId: number): void {
+    this.store.dispatch(
+      LandingPageActions.setColumnsLoading({ isLoading: true })
+    );
     this.columnsService
       .getColumnsById(boardId)
       .pipe(takeUntil(this.unsubscribe$))
@@ -117,9 +145,15 @@ export class ColumnsListComponent {
           this.store.dispatch(
             LandingPageActions.setCurrentColumns({ data: newData })
           );
+
+          this.store.dispatch(
+            LandingPageActions.setColumnsLoading({ isLoading: false })
+          );
         },
         error: (error) => {
-          console.log(error);
+          this.store.dispatch(
+            LandingPageActions.setColumnsLoading({ isLoading: false })
+          );
         },
       });
   }

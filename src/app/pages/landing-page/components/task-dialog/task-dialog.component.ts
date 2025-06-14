@@ -141,13 +141,24 @@ export class TaskDialogComponent {
     }
   }
 
+  handleDialogWith(): string {
+    let width = '40vw';
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) {
+      width = '90vw';
+    } else if (screenWidth <= 1024) {
+      width = '70vw';
+    }
+    return width;
+  }
+
   handleEditTask(type: 'create' | 'edit', task: Task): void {
     this.editionDialogRef = this.dialogService.open(CreateTaskComponent, {
       focusOnShow: false,
       modal: true,
       closable: true,
       header: type === 'create' ? 'Add New Task' : 'Edit task',
-      width: '40vw',
+      width: this.handleDialogWith(),
       styleClass: 'text-primary',
       data: {
         type: type,
@@ -181,7 +192,7 @@ export class TaskDialogComponent {
         modal: true,
         closable: true,
         header: 'Delete this task?',
-        width: '40vw',
+        width: this.handleDialogWith(),
         styleClass: 'text-primary',
         data: {
           message: `Are you sure you want to delete the '${this.formatLongText(
@@ -204,6 +215,9 @@ export class TaskDialogComponent {
   }
 
   getColumnsById(boardId: number): void {
+    this.store.dispatch(
+      LandingPageActions.setColumnsLoading({ isLoading: true })
+    );
     this.columnsService
       .getColumnsById(boardId)
       .pipe(takeUntil(this.unsubscribe$))
@@ -227,9 +241,17 @@ export class TaskDialogComponent {
           this.store.dispatch(
             LandingPageActions.setCurrentColumns({ data: newData })
           );
+
+          this.store.dispatch(
+            LandingPageActions.setColumnsLoading({ isLoading: false })
+          );
         },
         error: (error) => {
           console.log(error);
+
+          this.store.dispatch(
+            LandingPageActions.setColumnsLoading({ isLoading: false })
+          );
         },
       });
   }

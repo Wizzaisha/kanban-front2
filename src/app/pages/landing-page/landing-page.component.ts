@@ -77,12 +77,20 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   }
 
   getAllBoards(): void {
+    this.store.dispatch(
+      LandingPageActions.setBoardsLoading({ isLoading: true })
+    );
+
     this.boardsService
       .getAll()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data) => {
           this.store.dispatch(LandingPageActions.setBoards({ data: data }));
+
+          this.store.dispatch(
+            LandingPageActions.setBoardsLoading({ isLoading: false })
+          );
 
           if (data[0]) {
             this.store.dispatch(
@@ -92,6 +100,10 @@ export class LandingPageComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.log(error);
+
+          this.store.dispatch(
+            LandingPageActions.setBoardsLoading({ isLoading: false })
+          );
         },
       });
   }

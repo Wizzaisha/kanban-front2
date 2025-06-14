@@ -27,3 +27,13 @@ export const selectCurrentColumns = createSelector(
   selectState,
   (state) => state.currentColumns
 );
+
+export const selectBoardsLoading = createSelector(
+  selectState,
+  (state) => state.boardsLoading
+);
+
+export const selectColumnsLoading = createSelector(
+  selectState,
+  (state) => state.columnsLoading
+);

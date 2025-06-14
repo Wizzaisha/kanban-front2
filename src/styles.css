@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 @import "tailwindcss-primeui";
+@theme {
+  --breakpoint-sm: 0rem;
+  --breakpoint-md: 40rem;
+  --breakpoint-xl: 70rem;
+}
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark;
 }

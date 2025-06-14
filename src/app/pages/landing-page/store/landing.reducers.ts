@@ -9,6 +9,8 @@ export interface LandingPageState {
   boards: Boards[];
   activeBoard: number | null;
   currentColumns: ColumnStatus[];
+  boardsLoading: boolean;
+  columnsLoading: boolean;
 }
 
 export const landingPageInitialState: LandingPageState = {
@@ -17,6 +19,8 @@ export const landingPageInitialState: LandingPageState = {
   boards: [],
   activeBoard: null,
   currentColumns: [],
+  boardsLoading: false,
+  columnsLoading: false,
 };
 
 export const landingPageReducer = createReducer(
@@ -68,6 +72,20 @@ export const landingPageReducer = createReducer(
     return {
       ...state,
       currentColumns: action.data,
+    };
+  }),
+
+  on(LandingPageActions.setBoardsLoading, (state, action) => {
+    return {
+      ...state,
+      boardsLoading: action.isLoading,
+    };
+  }),
+
+  on(LandingPageActions.setColumnsLoading, (state, action) => {
+    return {
+      ...state,
+      columnsLoading: action.isLoading,
     };
   })
 );

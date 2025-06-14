@@ -1,5 +1,8 @@
 <div class="w-full">
-  <p class="pl-4">ALL BOARDS (3)</p>
+  @if (isLoading) {
+  <app-board-list-skeleton></app-board-list-skeleton>
+  } @else { @if (boards$ | async; as boards) {
+  <p class="pl-4">ALL BOARDS ({{ boards.length }})</p>
 
   <ul class="pr-10 mt-3">
     @for (board of boards$ | async; track $index) {
@@ -20,6 +23,7 @@
     </li>
     }
   </ul>
+  } }
 
   <button
     class="w-full btn btn-ghost text-secondary-content rounded-l-none rounded-r-3xl flex justify-start items-center gap-3 hover:text-secondary-content"

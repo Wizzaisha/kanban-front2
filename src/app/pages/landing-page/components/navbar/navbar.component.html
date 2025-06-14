@@ -6,7 +6,9 @@
   }
   <div class="flex-1 flex flex-row justify-start items-center h-full px-10">
     <div class="flex-1">
-      <h1 class="text-4xl font-bold">{{ currentBoard.name }}</h1>
+      <h1 class="text-4xl font-bold">
+        {{ activeBoard ? currentBoard.name : "Boards are empy." }}
+      </h1>
     </div>
 
     <div class="flex-none flex flex-row gap-5 justify-center items-center">

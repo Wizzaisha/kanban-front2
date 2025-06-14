@@ -104,13 +104,24 @@ export class NavbarComponent implements OnInit {
     });
   }
 
+  handleDialogWith(): string {
+    let width = '40vw';
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) {
+      width = '90vw';
+    } else if (screenWidth <= 1024) {
+      width = '70vw';
+    }
+    return width;
+  }
+
   handleAddNewTask(type: 'create' | 'edit'): void {
     this.ref = this.dialogService.open(CreateTaskComponent, {
       focusOnShow: false,
       modal: true,
       closable: true,
       header: type === 'create' ? 'Add New Task' : 'Edit task',
-      width: '40vw',
+      width: this.handleDialogWith(),
       styleClass: 'text-primary',
       data: {
         type: type,
@@ -157,7 +168,7 @@ export class NavbarComponent implements OnInit {
       modal: true,
       closable: true,
       header: 'Edit Board',
-      width: '40vw',
+      width: this.handleDialogWith(),
       styleClass: 'text-primary',
       data: {
         type: 'edit',
@@ -188,7 +199,7 @@ export class NavbarComponent implements OnInit {
         modal: true,
         closable: true,
         header: 'Delete this board?',
-        width: '40vw',
+        width: this.handleDialogWith(),
         styleClass: 'text-primary',
         data: {
           message: `Are you sure you want to delete the '${this.currentBoard.name}' This action will remove all columns and tasks and cannot be reversed.`,
@@ -222,13 +233,18 @@ export class NavbarComponent implements OnInit {
   }
 
   getAllBoards(board?: Boards): void {
+    this.store.dispatch(
+      LandingPageActions.setBoardsLoading({ isLoading: true })
+    );
     this.boardsService
       .getAll()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data) => {
           this.store.dispatch(LandingPageActions.setBoards({ data: data }));
-
+          this.store.dispatch(
+            LandingPageActions.setBoardsLoading({ isLoading: false })
+          );
           if (board) {
             this.store.dispatch(
               LandingPageActions.setActiveBoard({ data: board })
@@ -243,6 +259,9 @@ export class NavbarComponent implements OnInit {
         },
         error: (error) => {
           console.log(error);
+          this.store.dispatch(
+            LandingPageActions.setBoardsLoading({ isLoading: false })
+          );
         },
       });
   }

@@ -9,6 +9,9 @@ const ADD_BOARD = '[Add Lading Page] Add New Board';
 const SET_ACTIVE_BOARD = '[Set Lading Page] Set Active Board';
 const RESET_ACTIVE_BOARD = '[Reset Lading Page] Reset Active Board';
 
+const SET_BOARDS_LOADING = '[Set Lading Page] Set Boards Loading';
+const SET_COLUMNS_LOADING = '[Set Lading Page] Set Colmuns Loading';
+
 const SET_CURRENT_COLUMNS = '[Set Lading Page] Set Current Columns';
 
 export const setShowSidebar = createAction(
@@ -35,4 +38,14 @@ export const addBoard = createAction(ADD_BOARD, props<{ data: Boards }>());
 export const setCurrentColumns = createAction(
   SET_CURRENT_COLUMNS,
   props<{ data: ColumnStatus[] }>()
+);
+
+export const setBoardsLoading = createAction(
+  SET_BOARDS_LOADING,
+  props<{ isLoading: boolean }>()
+);
+
+export const setColumnsLoading = createAction(
+  SET_COLUMNS_LOADING,
+  props<{ isLoading: boolean }>()
 );
